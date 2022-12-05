@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 	}, [nfts]);
 
 	const tokenBalance = useMemo(
-		() => +balances[TokenType.BANANA].amount / 1e6,
+		() => +(balances[TokenType.BANANA]?.amount || "0") / 1e6,
 		[balances]
 	);
 
