@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import ReactTooltip from "react-tooltip";
 import { useAppSelector } from "../../app/hooks";
 import Collections, {
@@ -10,6 +10,10 @@ import NFTItem from "../NFTItem";
 import { HorizontalEqualIcon, PlusIcon, VerticalEqualIcon } from "../SvgIcons";
 import Text from "../Text";
 import {
+	OtherCollectionIDs,
+	getOtherCollectionById,
+} from "../../constants/Collections";
+import {
 	Button,
 	NftContainer,
 	NFTImageContainer,
@@ -18,6 +22,9 @@ import {
 	TooltipContainer,
 	Wrapper,
 } from "./styled";
+import { useWalletManager } from "@noahsaso/cosmodal";
+import useContract from "../../hooks/useContract";
+import { TokenType } from "../../types/tokens";
 
 type TBasicComponents = {
 	[CollectionIDs.BORED]: any;
@@ -69,6 +76,10 @@ const renderInfo = {
 				</div>
 			</>
 		),
+	},
+	nextCollectionName: {
+		[CollectionIDs.BORED]: "S1 SERUM",
+		[CollectionIDs.BORED3D]: "MUTANT BAIC",
 	},
 	nextButtonString: {
 		[CollectionIDs.BORED]: "MINT NFT S1 SERUM",
@@ -122,6 +133,10 @@ const renderInfo = {
 			</>
 		),
 	},
+	relatedCollections: {
+		[CollectionIDs.BORED]: OtherCollectionIDs.SERUM,
+		[CollectionIDs.BORED3D]: null,
+	},
 };
 
 const renderOrder: (
@@ -139,7 +154,50 @@ const renderOrder: (
 ];
 
 const NFTCollections: React.FC = () => {
+	const { connectedWallet } = useWalletManager();
+	const { runQuery, runExecute } = useContract();
 	const nfts = useAppSelector((state) => state.nfts);
+
+	const handleMintSerum = useCallback(
+		async (collectionId: CollectionIDs) => {
+			if (!connectedWallet) return;
+			if (!renderInfo.relatedCollections[collectionId]) return;
+			const collectionInfo = getOtherCollectionById(
+				renderInfo.relatedCollections[collectionId]
+			);
+			const mintStateInfo = await runQuery(collectionInfo.mintContract, {
+				get_state_info: { address: connectedWallet.address },
+			});
+			const tokenStateInfo = await runQuery(mintStateInfo.token_address, {
+				allowance: {
+					owner: connectedWallet.address,
+					spender: collectionInfo.mintContract,
+				},
+			});
+			if (
+				+(tokenStateInfo?.allowance || "0") <
+				+(mintStateInfo?.token_price || "0")
+			) {
+				await runExecute(mintStateInfo.token_address, {
+					increase_allowance: {
+						spender: collectionInfo.mintContract,
+						amount: `${mintStateInfo.token_price || 0}`,
+					},
+				});
+			}
+			await runExecute(
+				collectionInfo.mintContract,
+				{
+					mint: {},
+				},
+				{
+					funds: `${+(mintStateInfo.coin_price || "0") / 1e6}`,
+					denom: TokenType.JUNO,
+				}
+			);
+		},
+		[connectedWallet, runExecute, runQuery]
+	);
 
 	const RenderComponents = useMemo(() => {
 		let result: TRenderComponents = {
@@ -171,6 +229,10 @@ const NFTCollections: React.FC = () => {
 		};
 		Collections.forEach((collection: ICollections) => {
 			const crrNfts = nfts[collection.collectionId] || [];
+			const relatedCollectionId =
+				renderInfo.relatedCollections[collection.collectionId];
+			const crrNextNfts = relatedCollectionId ? nfts[relatedCollectionId] : [];
+
 			result.nftImage[collection.collectionId] = (
 				<NFTImageContainer>
 					<img alt="" src={`/images/nft/${collection.collectionId}.png`} />
@@ -205,7 +267,7 @@ const NFTCollections: React.FC = () => {
 			result.nextNftImage[collection.collectionId] = (
 				<NFTImageContainer>
 					<img alt="" src={`/images/nft/next-${collection.collectionId}.png`} />
-					<Button>
+					<Button onClick={() => handleMintSerum(collection.collectionId)}>
 						{renderInfo.nextButtonString[collection.collectionId]}
 						<InfoIcon
 							data-tip
@@ -214,9 +276,22 @@ const NFTCollections: React.FC = () => {
 					</Button>
 				</NFTImageContainer>
 			);
+			result.nextNftContainer[collection.collectionId] = (
+				<NftContainer>
+					<Text fontSize="25px" bold>
+						My NFTs {renderInfo.nextCollectionName[collection.collectionId]}:{" "}
+						{crrNextNfts.length || 0}
+					</Text>
+					<NFTs>
+						{crrNextNfts.map((nft: TNFT, index: number) => (
+							<NFTItem key={index} {...nft} nextCollection />
+						))}
+					</NFTs>
+				</NftContainer>
+			);
 		});
 		return result;
-	}, [nfts]);
+	}, [nfts, handleMintSerum]);
 
 	return (
 		<Wrapper>

@@ -7,8 +7,12 @@ import {
 } from "../features/balances/balancesSlice";
 import useContract from "./useContract";
 import { setNFTs } from "../features/nfts/nftsSlice";
-import Collections, { ICollections } from "../constants/Collections";
+import Collections, {
+	ICollections,
+	IOtherCollections,
+} from "../constants/Collections";
 import { TNFT } from "../types/nft";
+import { OtherCollections } from "../constants/Collections";
 
 export const getTokenIdNumber = (id: string): string => {
 	if (!id) return "";
@@ -31,7 +35,7 @@ const useFetch = () => {
 			if (!connectedWallet) {
 				dispatch(setNFTs([collection.collectionId, []]));
 			} else {
-				const queryResult: any = await runQuery(collection.contract, {
+				const queryResult: any = await runQuery(collection.nftContract, {
 					tokens: {
 						owner: connectedWallet?.address,
 						start_after: undefined,
@@ -43,6 +47,26 @@ const useFetch = () => {
 				// 		(item) => `${collection.collectionId}.${item}`
 				// 	),
 				// };
+				const nftList: TNFT[] = queryResult?.tokens?.length
+					? queryResult.tokens.map((item: string) => ({
+							token_id: item,
+							collectionId: collection.collectionId,
+					  }))
+					: [];
+				dispatch(setNFTs([collection.collectionId, nftList]));
+			}
+		});
+		OtherCollections.forEach(async (collection: IOtherCollections) => {
+			if (!connectedWallet) {
+				dispatch(setNFTs([collection.collectionId, []]));
+			} else {
+				const queryResult: any = await runQuery(collection.nftContract, {
+					tokens: {
+						owner: connectedWallet?.address,
+						start_after: undefined,
+						limit: 100,
+					},
+				});
 				const nftList: TNFT[] = queryResult?.tokens?.length
 					? queryResult.tokens.map((item: string) => ({
 							token_id: item,

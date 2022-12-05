@@ -2,6 +2,7 @@ import { ChainTypes } from "../constants/ChainTypes";
 
 export enum TokenType {
 	JUNO = "ujuno",
+	BANANA = "BANANA",
 	// HOPE = "hope",
 	// RAW = "raw",
 	// NETA = "neta",
@@ -29,6 +30,13 @@ export const TokenStatus: { [key in TokenType]: TokenStatusType } = {
 		isNativeCoin: true,
 		isIBCCOin: false,
 		chain: ChainTypes.JUNO,
+	},
+	[TokenType.BANANA]: {
+		isNativeCoin: false,
+		isIBCCOin: false,
+		chain: ChainTypes.JUNO,
+		contractAddress:
+			"juno1aa3scs6zj34e2f4uv72wr0ygx69gh0wk670wg7e5f8e7ref2vm2qjh525e",
 	},
 	// [TokenType.HOPE]: {
 	//   isNativeCoin: false,

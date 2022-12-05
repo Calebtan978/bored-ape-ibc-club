@@ -7,10 +7,18 @@ export const Wrapper = styled.div`
 	gap: 10px;
 `;
 
-export const Button = styled.div`
-	background: #ff5c5c;
+export const ButtonContainer = styled.div`
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+`;
+
+export const Button = styled.div<{ backgroundColor?: string }>`
+	background: ${({ backgroundColor }) => backgroundColor ?? "#ff5c5c"};
 	color: white;
-	width: 60%;
+	width: 80px;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	border: 3px solid white;
 	border-radius: 100px;

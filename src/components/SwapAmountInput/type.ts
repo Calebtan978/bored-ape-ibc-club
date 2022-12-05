@@ -14,7 +14,7 @@ export const AvailableTokens: {
 	};
 } = {
 	[TokenType.JUNO]: {
-		fieldKey: "token_cost_juno",
+		fieldKey: "token_ratio",
 		symbol: "JUNO",
 	},
 	// [TokenType.ATOM]: {

@@ -1,12 +1,20 @@
 import React from "react";
-import { Button, Wrapper } from "./styled";
-import { getCollectionById } from "../../constants/Collections";
+import { getCollectionByIdFromTotal } from "../../constants/Collections";
 import { getTokenIdNumber } from "../../hooks/useFetch";
 import { TNFT } from "../../types/nft";
 import Text from "../Text";
 
-const NFTItem: React.FC<TNFT> = ({ token_id, collectionId }) => {
-	const collectionInfo = getCollectionById(collectionId);
+import { Button, ButtonContainer, Wrapper } from "./styled";
+interface INFTItem extends TNFT {
+	nextCollection?: boolean;
+}
+
+const NFTItem: React.FC<INFTItem> = ({
+	token_id,
+	collectionId,
+	nextCollection,
+}) => {
+	const collectionInfo = getCollectionByIdFromTotal(collectionId);
 
 	return (
 		<Wrapper>
@@ -16,13 +24,16 @@ const NFTItem: React.FC<TNFT> = ({ token_id, collectionId }) => {
 				src={`${collectionInfo.imageUrl}${getTokenIdNumber(token_id)}.png`}
 			/>
 			<Text>{token_id}</Text>
-			<Button
-				onClick={() =>
-					window.open(`https://hopers.io/nft/detail?token_id=${token_id}`)
-				}
-			>
-				Sell
-			</Button>
+			<ButtonContainer>
+				<Button
+					onClick={() =>
+						window.open(`https://hopers.io/nft/detail?token_id=${token_id}`)
+					}
+				>
+					Sell
+				</Button>
+				{nextCollection && <Button backgroundColor="#5CFF63">Evolve</Button>}
+			</ButtonContainer>
 		</Wrapper>
 	);
 };

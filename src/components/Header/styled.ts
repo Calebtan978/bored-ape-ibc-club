@@ -11,6 +11,8 @@ export const Wrapper = styled.div`
 	align-items: center;
 
 	padding: 70px 35px 20px 40px;
+	backdrop-filter: blur(10px);
+	z-index: 100;
 
 	/* &:after {
 		content: "";
@@ -20,7 +22,6 @@ export const Wrapper = styled.div`
 		right: 0;
 		bottom: 0;
 		background-color: rgba(255, 255, 255, 0.15);
-		backdrop-filter: blur(5px);
 	} */
 `;
 
