@@ -33,7 +33,13 @@ export const WalletStatus = styled.div`
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 10px;
+	gap: 20px;
+`;
+
+export const WalletStatusItem = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 
 export const ConnectWalletButton = styled.div`
@@ -57,7 +63,7 @@ export const ConnectWalletButton = styled.div`
 	text-transform: uppercase;
 	width: max-content;
 	max-width: 400px;
-	min-width: 235px;
+	min-width: 200px;
 	height: 65px;
 	padding: 6px 16px;
 	color: #fff;
