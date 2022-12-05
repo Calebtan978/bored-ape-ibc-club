@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import ReactTooltip from "react-tooltip";
 import { useAppSelector } from "../../app/hooks";
 import Collections, {
@@ -25,6 +25,7 @@ import {
 import { useWalletManager } from "@noahsaso/cosmodal";
 import useContract from "../../hooks/useContract";
 import { TokenType } from "../../types/tokens";
+import Loader from "../Loader";
 
 type TBasicComponents = {
 	[CollectionIDs.BORED]: any;
@@ -154,49 +155,58 @@ const renderOrder: (
 ];
 
 const NFTCollections: React.FC = () => {
+	const [isMintingSerum, setIsMintingSerum] = useState<any>({});
 	const { connectedWallet } = useWalletManager();
 	const { runQuery, runExecute } = useContract();
 	const nfts = useAppSelector((state) => state.nfts);
 
 	const handleMintSerum = useCallback(
 		async (collectionId: CollectionIDs) => {
+			if (isMintingSerum[collectionId]) return;
 			if (!connectedWallet) return;
 			if (!renderInfo.relatedCollections[collectionId]) return;
 			const collectionInfo = getOtherCollectionById(
 				renderInfo.relatedCollections[collectionId]
 			);
-			const mintStateInfo = await runQuery(collectionInfo.mintContract, {
-				get_state_info: { address: connectedWallet.address },
-			});
-			const tokenStateInfo = await runQuery(mintStateInfo.token_address, {
-				allowance: {
-					owner: connectedWallet.address,
-					spender: collectionInfo.mintContract,
-				},
-			});
-			if (
-				+(tokenStateInfo?.allowance || "0") <
-				+(mintStateInfo?.token_price || "0")
-			) {
-				await runExecute(mintStateInfo.token_address, {
-					increase_allowance: {
+			try {
+				setIsMintingSerum((prev: any) => ({ ...prev, [collectionId]: true }));
+				const mintStateInfo = await runQuery(collectionInfo.mintContract, {
+					get_state_info: { address: connectedWallet.address },
+				});
+				const tokenStateInfo = await runQuery(mintStateInfo.token_address, {
+					allowance: {
+						owner: connectedWallet.address,
 						spender: collectionInfo.mintContract,
-						amount: `${mintStateInfo.token_price || 0}`,
 					},
 				});
-			}
-			await runExecute(
-				collectionInfo.mintContract,
-				{
-					mint: {},
-				},
-				{
-					funds: `${+(mintStateInfo.coin_price || "0") / 1e6}`,
-					denom: TokenType.JUNO,
+				if (
+					+(tokenStateInfo?.allowance || "0") <
+					+(mintStateInfo?.token_price || "0")
+				) {
+					await runExecute(mintStateInfo.token_address, {
+						increase_allowance: {
+							spender: collectionInfo.mintContract,
+							amount: `${mintStateInfo.token_price || 0}`,
+						},
+					});
 				}
-			);
+				await runExecute(
+					collectionInfo.mintContract,
+					{
+						mint: {},
+					},
+					{
+						funds: `${+(mintStateInfo.coin_price || "0") / 1e6}`,
+						denom: TokenType.JUNO,
+					}
+				);
+			} catch (e) {
+				console.log("mint error", e);
+			} finally {
+				setIsMintingSerum((prev: any) => ({ ...prev, [collectionId]: false }));
+			}
 		},
-		[connectedWallet, runExecute, runQuery]
+		[connectedWallet, isMintingSerum, runExecute, runQuery]
 	);
 
 	const RenderComponents = useMemo(() => {
@@ -255,10 +265,10 @@ const NFTCollections: React.FC = () => {
 				<NftContainer>
 					<Text fontSize="25px" bold>
 						My NFTs {renderInfo.collectionName[collection.collectionId]}:{" "}
-						{crrNfts.length || 0}
+						{crrNfts?.length || 0}
 					</Text>
 					<NFTs>
-						{crrNfts.map((nft: TNFT, index: number) => (
+						{crrNfts?.map((nft: TNFT, index: number) => (
 							<NFTItem key={index} {...nft} />
 						))}
 					</NFTs>
@@ -268,7 +278,11 @@ const NFTCollections: React.FC = () => {
 				<NFTImageContainer>
 					<img alt="" src={`/images/nft/next-${collection.collectionId}.png`} />
 					<Button onClick={() => handleMintSerum(collection.collectionId)}>
-						{renderInfo.nextButtonString[collection.collectionId]}
+						{isMintingSerum[collection.collectionId] ? (
+							<Loader />
+						) : (
+							renderInfo.nextButtonString[collection.collectionId]
+						)}
 						<InfoIcon
 							data-tip
 							data-for={`${collection.collectionId}-tooltip-next`}
@@ -280,10 +294,10 @@ const NFTCollections: React.FC = () => {
 				<NftContainer>
 					<Text fontSize="25px" bold>
 						My NFTs {renderInfo.nextCollectionName[collection.collectionId]}:{" "}
-						{crrNextNfts.length || 0}
+						{crrNextNfts?.length || 0}
 					</Text>
 					<NFTs>
-						{crrNextNfts.map((nft: TNFT, index: number) => (
+						{crrNextNfts?.map((nft: TNFT, index: number) => (
 							<NFTItem key={index} {...nft} nextCollection />
 						))}
 					</NFTs>
@@ -291,7 +305,7 @@ const NFTCollections: React.FC = () => {
 			);
 		});
 		return result;
-	}, [nfts, handleMintSerum]);
+	}, [nfts, isMintingSerum, handleMintSerum]);
 
 	return (
 		<Wrapper>

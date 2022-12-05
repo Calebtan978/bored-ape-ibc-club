@@ -29,6 +29,7 @@ import Text from "../../components/Text";
 // import { SwapCrossIcon } from "../../components/SvgIcons";
 import useContract from "../../hooks/useContract";
 import CountDown from "../CountDown";
+import Loader from "../Loader";
 
 interface SwapAmountInputProps extends BasicProps {
 	idoInfo: IDOInterface;
@@ -39,6 +40,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 	idoInfo,
 	buyCallback,
 }) => {
+	const [isPending, setIsPending] = useState(false);
 	const [swapAmount, setSwapAmount] = useState<any>({
 		[SwapAmountType.ORIGIN]: 0,
 		[SwapAmountType.TARGET]: 0,
@@ -102,6 +104,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 	};
 
 	const handleBuyToken = async () => {
+		if (isPending) return;
 		if (swapAmount[SwapAmountType.ORIGIN] === 0) {
 			toast.error("Invalid amount!");
 			return;
@@ -115,6 +118,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 			return;
 		}
 		try {
+			setIsPending(true);
 			await runExecute(
 				idoInfo.contract,
 				{
@@ -134,6 +138,8 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 		} catch (e) {
 			toast.error("Buying Failed!");
 			console.error(e);
+		} finally {
+			setIsPending(false);
 		}
 	};
 
@@ -282,10 +288,9 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 						</TokenSwapAmountItem>
 					</Flex>
 				</TokenSwapAmountPanel>
-				<Button
-					onClick={handleBuyToken}
-					beforeString="1JUNO = 3BANANA"
-				>{`BUY ${idoInfo.symbol}`}</Button>
+				<Button onClick={handleBuyToken} beforeString="1JUNO = 3BANANA">
+					{isPending ? <Loader /> : `BUY ${idoInfo.symbol}`}
+				</Button>
 			</SwapAmountInputWrapper>
 			<CountDown
 				time={

@@ -21,7 +21,10 @@ import { TNFT } from "../../types/nft";
 //     id:""
 //   },
 // };
-type NFTsStateType = Record<`${CollectionIDs | OtherCollectionIDs}`, TNFT[]>;
+export type NFTsStateType = Record<
+	`${CollectionIDs | OtherCollectionIDs}`,
+	TNFT[]
+>;
 
 let initialState: NFTsStateType = {} as NFTsStateType;
 
