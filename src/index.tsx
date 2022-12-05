@@ -14,6 +14,8 @@ import reportWebVitals from "./reportWebVitals";
 import WalletProvider from "./contexts/WalletContext";
 import { persistor, store } from "./app/store";
 import Updater from "./contexts/Updater";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -29,6 +31,18 @@ root.render(
 							<Route path="/" element={<App />} />
 							<Route path="*" element={<Navigate to="/" />} />
 						</Routes>
+						<ToastContainer
+							position="top-right"
+							autoClose={5000}
+							rtl={false}
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+							hideProgressBar
+							newestOnTop
+							closeOnClick
+							theme="colored"
+						/>
 					</Router>
 				</WalletProvider>
 			</PersistGate>

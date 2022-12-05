@@ -126,6 +126,10 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 				}
 			);
 			toast.success("Successfully Buy!");
+			setSwapAmount({
+				[SwapAmountType.ORIGIN]: 0,
+				[SwapAmountType.TARGET]: 0,
+			});
 			if (buyCallback) buyCallback();
 		} catch (e) {
 			toast.error("Buying Failed!");

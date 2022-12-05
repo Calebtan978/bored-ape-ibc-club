@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Collections, {
 	CollectionIDs,
 	ICollections,
+	OtherCollectionIDs,
 } from "../../constants/Collections";
 import { TNFT } from "../../types/nft";
 
@@ -20,7 +21,7 @@ import { TNFT } from "../../types/nft";
 //     id:""
 //   },
 // };
-type NFTsStateType = Record<`${CollectionIDs}`, TNFT[]>;
+type NFTsStateType = Record<`${CollectionIDs | OtherCollectionIDs}`, TNFT[]>;
 
 let initialState: NFTsStateType = {} as NFTsStateType;
 

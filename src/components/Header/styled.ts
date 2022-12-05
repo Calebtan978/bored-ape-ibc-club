@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 	align-items: center;
 
 	padding: 70px 35px 20px 40px;
-	backdrop-filter: blur(30px);
+	backdrop-filter: blur(10px);
 	z-index: 100;
 
 	/* &:after {
