@@ -195,10 +195,12 @@ const NFTCollections: React.FC = () => {
 					{
 						mint: {},
 					},
-					{
-						funds: `${+(mintStateInfo.coin_price || "0") / 1e6}`,
-						denom: TokenType.JUNO,
-					}
+					mintStateInfo?.token_price === "0"
+						? {}
+						: {
+								funds: `${+(mintStateInfo.coin_price || "0") / 1e6}`,
+								denom: TokenType.JUNO,
+						  }
 				);
 			} catch (e) {
 				console.log("mint error", e);
