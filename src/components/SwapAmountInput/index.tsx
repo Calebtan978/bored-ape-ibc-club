@@ -26,7 +26,6 @@ import { BasicProps } from "../../constants/BasicTypes";
 import { IDOInterface } from "../../constants/IDOs";
 import useIDOStatus from "./useIDOStatus";
 import { TokenType } from "../../types/tokens";
-import Text from "../../components/Text";
 // import { SwapCrossIcon } from "../../components/SvgIcons";
 import useContract from "../../hooks/useContract";
 import CountDown from "../CountDown";
