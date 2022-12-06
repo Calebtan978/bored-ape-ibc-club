@@ -11,6 +11,7 @@ import {
 	Button,
 	// CustomControl,
 	Flex,
+	StyledText,
 	// SelectItem,
 	SwapAmountInputWrapper,
 	TokenAmountAutoInputer,
@@ -272,12 +273,12 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 									handleChangeSwapAmountInput(SwapAmountType.ORIGIN, e)
 								}
 							/>
-							<Text fontSize="20px">{`Balance ${idoStatus.balance}`}</Text>
+							<StyledText>{`Balance ${idoStatus.balance}`}</StyledText>
 						</TokenSwapAmountInputer>
 					</TokenSwapAmountItem>
 					{/* <SwapCrossIcon width={30} /> */}
 					<Flex flexDirection="column" alignItems="center" gap="5px">
-						<Text fontSize="20px">{`1 ${AvailableTokens[selectedTokenType].symbol} = ${idoStatus.ratio} ${idoInfo.symbol}`}</Text>
+						<StyledText>{`1 ${AvailableTokens[selectedTokenType].symbol} = ${idoStatus.ratio} ${idoInfo.symbol}`}</StyledText>
 						<TokenSwapAmountItem style={{ alignItems: "flex-start" }}>
 							<TokenSwapAmountInputer>
 								<input
@@ -286,7 +287,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 										handleChangeSwapAmountInput(SwapAmountType.TARGET, e)
 									}
 								/>
-								<Text fontSize="20px">{idoInfo.symbol}</Text>
+								<StyledText>{idoInfo.symbol}</StyledText>
 							</TokenSwapAmountInputer>
 							<TokenImage
 								// style={{ marginTop: 10 }}

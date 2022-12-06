@@ -36,7 +36,7 @@ export const TokenStatus: { [key in TokenType]: TokenStatusType } = {
 		isIBCCOin: false,
 		chain: ChainTypes.JUNO,
 		contractAddress:
-			"juno1aa3scs6zj34e2f4uv72wr0ygx69gh0wk670wg7e5f8e7ref2vm2qjh525e",
+			"juno1s2dp05rspeuzzpzyzdchk262szehrtfpz847uvf98cnwh53ulx4qg20qwj",
 	},
 	// [TokenType.HOPE]: {
 	//   isNativeCoin: false,

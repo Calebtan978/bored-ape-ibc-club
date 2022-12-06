@@ -26,6 +26,15 @@ export const InfoItem = styled.div`
 		top: 0;
 		cursor: pointer;
 	}
+	@media (max-width: 1024px) {
+		font-size: 30px;
+	}
+	@media (max-width: 768px) {
+		font-size: 25px;
+	}
+	@media (max-width: 500px) {
+		font-size: 20px;
+	}
 `;
 
 export const TooltipContainer = styled.div`
@@ -36,4 +45,6 @@ export const TooltipContainer = styled.div`
 
 export const BananaLogo = styled.img`
 	margin: 20px 0;
-`
+	max-width: 50%;
+	min-width: 200px;
+`;

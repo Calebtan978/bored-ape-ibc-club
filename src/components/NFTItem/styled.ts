@@ -5,6 +5,15 @@ export const Wrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
+	& > img {
+		width: 100px;
+		@media (max-width: 1024px) {
+			width: 80px;
+		}
+		@media (max-width: 768px) {
+			width: 60px;
+		}
+	}
 `;
 
 export const ButtonContainer = styled.div`
@@ -30,7 +39,9 @@ export const Button = styled.div<{ backgroundColor?: string }>`
 	&:hover {
 		opacity: 0.8;
 	}
-	@media (max-width: 500px) {
-		min-width: 100px;
+	@media (max-width: 768px) {
+		font-size: 14px;
+		padding: 5px 8px;
+		width: max-content;
 	}
 `;

@@ -34,4 +34,9 @@ export const DigitContainer = styled.div`
 	justify-content: center;
 	background: white;
 	color: black;
+	@media (max-width: 768px) {
+		width: 60px;
+		height: 60px;
+		font-size: 20px;
+	}
 `;

@@ -8,7 +8,6 @@ import Collections, {
 import { TNFT } from "../../types/nft";
 import NFTItem from "../NFTItem";
 import { HorizontalEqualIcon, PlusIcon, VerticalEqualIcon } from "../SvgIcons";
-import Text from "../Text";
 import {
 	OtherCollectionIDs,
 	getOtherCollectionById,
@@ -19,6 +18,7 @@ import {
 	NFTImageContainer,
 	NFTs,
 	StyledInfoIcon as InfoIcon,
+	StyledText as Text,
 	TooltipContainer,
 	Wrapper,
 } from "./styled";
@@ -272,7 +272,7 @@ const NFTCollections: React.FC = () => {
 			);
 			result.nftContainer[collection.collectionId] = (
 				<NftContainer key={`nft-container-${collection.collectionId}`}>
-					<Text fontSize="25px" bold>
+					<Text bold>
 						My NFTs {renderInfo.collectionName[collection.collectionId]}:{" "}
 						{crrNfts?.length || 0}
 					</Text>
@@ -306,7 +306,7 @@ const NFTCollections: React.FC = () => {
 			);
 			result.nextNftContainer[collection.collectionId] = (
 				<NftContainer key={`next-nft-container-${collection.collectionId}`}>
-					<Text fontSize="25px" bold>
+					<Text bold>
 						My NFTs {renderInfo.nextCollectionName[collection.collectionId]}:{" "}
 						{crrNextNfts?.length || 0}
 					</Text>
