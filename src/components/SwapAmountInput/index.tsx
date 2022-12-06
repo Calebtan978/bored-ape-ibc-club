@@ -30,6 +30,7 @@ import Text from "../../components/Text";
 import useContract from "../../hooks/useContract";
 import CountDown from "../CountDown";
 import Loader from "../Loader";
+import useFetch from "../../hooks/useFetch";
 
 interface SwapAmountInputProps extends BasicProps {
 	idoInfo: IDOInterface;
@@ -59,6 +60,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 	// });
 	const { idoStatus: basicIdoStatus } = useIDOStatus(idoInfo.id);
 	const { runExecute } = useContract();
+	const { getTokenBalances } = useFetch();
 
 	const balances = useAppSelector((state) => state.balances);
 	const idoStatus = useMemo(() => {
@@ -140,6 +142,7 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 			console.error(e);
 		} finally {
 			setIsPending(false);
+			getTokenBalances();
 		}
 	};
 

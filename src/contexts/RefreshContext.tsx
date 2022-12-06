@@ -4,7 +4,12 @@ const SECOND_INTERVAL = 1000 * 10; // 10s
 const MINUTE_INTERVAL = 1000 * 60; // 1min
 const HOUR_INTERVAL = 1000 * 60 * 60; // 1h
 
-const RefreshContext = React.createContext({
+const RefreshContext = React.createContext<{
+	second: number;
+	minute: number;
+	hour: number;
+	refreshAll: () => void | null;
+}>({
 	second: 0,
 	minute: 0,
 	hour: 0,
@@ -76,7 +81,7 @@ const RefreshContextProvider = ({ children }: { children: any }) => {
 				second: secondValue,
 				hour: hourValue,
 				minute: minuteValue,
-				refreshAll,
+				refreshAll: refreshAll,
 			}}
 		>
 			{children}
