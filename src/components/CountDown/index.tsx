@@ -21,6 +21,7 @@ const CountDown: React.FC<CountDownProps> = ({
 			<Countdown
 				date={new Date(time)}
 				autoStart
+				onTick={(timeDelta) => console.log("on tick", timeDelta)}
 				renderer={({
 					days,
 					hours,

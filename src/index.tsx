@@ -16,6 +16,7 @@ import { persistor, store } from "./app/store";
 import Updater from "./contexts/Updater";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { RefreshContextProvider } from "./contexts/RefreshContext";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -25,25 +26,27 @@ root.render(
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
 				<WalletProvider>
-					<Updater />
-					<Router>
-						<Routes>
-							<Route path="/" element={<App />} />
-							<Route path="*" element={<Navigate to="/" />} />
-						</Routes>
-						<ToastContainer
-							position="top-right"
-							autoClose={5000}
-							rtl={false}
-							pauseOnFocusLoss
-							draggable
-							pauseOnHover
-							hideProgressBar
-							newestOnTop
-							closeOnClick
-							theme="colored"
-						/>
-					</Router>
+					<RefreshContextProvider>
+						<Updater />
+						<Router>
+							<Routes>
+								<Route path="/" element={<App />} />
+								<Route path="*" element={<Navigate to="/" />} />
+							</Routes>
+							<ToastContainer
+								position="top-right"
+								autoClose={5000}
+								rtl={false}
+								pauseOnFocusLoss
+								draggable
+								pauseOnHover
+								hideProgressBar
+								newestOnTop
+								closeOnClick
+								theme="colored"
+							/>
+						</Router>
+					</RefreshContextProvider>
 				</WalletProvider>
 			</PersistGate>
 		</Provider>
