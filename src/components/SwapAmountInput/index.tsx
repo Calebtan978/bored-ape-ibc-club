@@ -186,6 +186,11 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 	// 	);
 	// };
 
+	const countdownTime =
+		idoStatus.crrState === PresaleState.BEFORE
+			? idoStatus.startTime
+			: idoStatus.endTime;
+
 	return (
 		<>
 			<SwapAmountInputWrapper>
@@ -296,11 +301,8 @@ const SwapAmountInput: React.FC<SwapAmountInputProps> = ({
 				</Button>
 			</SwapAmountInputWrapper>
 			<CountDown
-				time={
-					idoStatus.crrState === PresaleState.BEFORE
-						? idoStatus.startTime
-						: idoStatus.endTime
-				}
+				key={countdownTime.getTime()}
+				time={countdownTime}
 				completedString="Presale ended"
 			/>
 		</>
