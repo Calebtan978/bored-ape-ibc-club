@@ -17,6 +17,9 @@ export const NFTImageContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	& > img {
+		width: 350px;
+	}
 `;
 
 export const Button = styled.div<{

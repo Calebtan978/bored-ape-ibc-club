@@ -20,6 +20,7 @@ const CountDown: React.FC<CountDownProps> = ({
 			{title && <Text bold>{title}</Text>}
 			<Countdown
 				date={new Date(time)}
+				autoStart
 				renderer={({
 					days,
 					hours,

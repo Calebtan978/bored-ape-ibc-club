@@ -26,6 +26,7 @@ import { useWalletManager } from "@noahsaso/cosmodal";
 import useContract from "../../hooks/useContract";
 import { TokenType } from "../../types/tokens";
 import Loader from "../Loader";
+import useFetch from "../../hooks/useFetch";
 
 type TBasicComponents = {
 	[CollectionIDs.BORED]: any;
@@ -158,6 +159,7 @@ const NFTCollections: React.FC = () => {
 	const [isMintingSerum, setIsMintingSerum] = useState<any>({});
 	const { connectedWallet } = useWalletManager();
 	const { runQuery, runExecute } = useContract();
+	const { fetchMyNFTs } = useFetch();
 	const nfts = useAppSelector((state) => state.nfts);
 
 	const handleMintSerum = useCallback(
@@ -206,9 +208,10 @@ const NFTCollections: React.FC = () => {
 				console.log("mint error", e);
 			} finally {
 				setIsMintingSerum((prev: any) => ({ ...prev, [collectionId]: false }));
+				fetchMyNFTs();
 			}
 		},
-		[connectedWallet, isMintingSerum, runExecute, runQuery]
+		[connectedWallet, fetchMyNFTs, isMintingSerum, runExecute, runQuery]
 	);
 
 	const RenderComponents = useMemo(() => {
@@ -278,7 +281,12 @@ const NFTCollections: React.FC = () => {
 			);
 			result.nextNftImage[collection.collectionId] = (
 				<NFTImageContainer>
-					<img alt="" src={`/images/nft/next-${collection.collectionId}.png`} />
+					<img
+						alt=""
+						src={`/images/nft/next-${collection.collectionId}.${
+							collection.collectionId === CollectionIDs.BORED ? "gif" : "png"
+						}`}
+					/>
 					<Button onClick={() => handleMintSerum(collection.collectionId)}>
 						{isMintingSerum[collection.collectionId] ? (
 							<Loader />
