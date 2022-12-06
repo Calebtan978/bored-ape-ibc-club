@@ -38,6 +38,12 @@ export const Button = styled.div<{
 				color: white;
 			}
 		`}
+	@media (max-width: 768px) {
+		font-size: 20px;
+		&::before {
+			font-size: 16px;
+		}
+	}
 `;
 
 export const SelectItem = styled.div<{ checked?: boolean }>`
@@ -110,10 +116,6 @@ export const TokenSwapAmountInputer = styled.div`
 		font-size: 24px;
 		text-align: right;
 		padding: 0 10px;
-		@media (max-width: 480px) {
-			height: 40px;
-			width: 100px;
-		}
 	}
 `;
 
@@ -139,20 +141,50 @@ export const TokenSwapAmountItem = styled.div`
 	gap: 10px;
 `;
 
+export const StyledText = styled(Text)`
+	font-size: 20px;
+`;
+
 export const TokenSwapAmountPanel = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	flex-wrap: wrap;
 	gap: 100px;
-	@media (max-width: 400px) {
+
+	@media (max-width: 1024px) {
 		gap: 50px;
 		${TokenSwapAmountInputer} {
 			& > input {
-				width: 130px;
-				height: 30px;
+				width: 200px;
 			}
 		}
+	}
+	@media (max-width: 768px) {
+		gap: 20px;
+		${TokenSwapAmountInputer} {
+			& > input {
+				width: 100px;
+			}
+		}
+		${TokenAmountAutoInputer} {
+			${TokenAmountAutoInputItem} {
+				font-size: 16px;
+			}
+		}
+		${StyledText} {
+			font-size: 16px;
+		}
+	}
+	@media (max-width: 480px) {
+		${TokenSwapAmountInputer} {
+			& > input {
+				height: 40px;
+			}
+		}
+	}
+
+	@media (max-width: 400px) {
 		${TokenAmountAutoInputer} {
 			gap: 5px;
 		}
