@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Countdown from "react-countdown";
 import { BasicProps } from "../../constants/BasicTypes";
 import Text from "../Text";
@@ -20,8 +20,6 @@ const CountDown: React.FC<CountDownProps> = ({
 			{title && <Text bold>{title}</Text>}
 			<Countdown
 				date={new Date(time)}
-				autoStart
-				onTick={(timeDelta) => console.log("on tick", timeDelta)}
 				renderer={({
 					days,
 					hours,
@@ -71,4 +69,4 @@ const CountDown: React.FC<CountDownProps> = ({
 	);
 };
 
-export default CountDown;
+export default memo(CountDown);
