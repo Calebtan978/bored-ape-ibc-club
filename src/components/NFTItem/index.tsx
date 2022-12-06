@@ -20,7 +20,6 @@ const NFTItem: React.FC<INFTItem> = ({
 		<Wrapper>
 			<img
 				alt=""
-				width={100}
 				src={`${collectionInfo.imageUrl}${getTokenIdNumber(token_id)}.png`}
 			/>
 			<Text>{token_id}</Text>

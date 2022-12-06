@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
 	left: 0;
 	top: 0;
 	width: 100vw;
+	max-width: 100%;
 	box-sizing: border-box;
 
 	display: flex;
