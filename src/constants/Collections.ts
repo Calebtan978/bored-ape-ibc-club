@@ -42,9 +42,9 @@ export const OtherCollections: IOtherCollections[] = [
 	{
 		collectionId: OtherCollectionIDs.SERUM,
 		nftContract:
-			"juno15m4wvp7kzc9765pqrz8z0fdn9mfmgxcwskskx4zvrjt3wmz7f32q47d32q",
+			"juno1cusdql5694xmckv64ux26lj2r095pt7dsyqt3ehrfm2gqm9cujlqzzpyz6",
 		mintContract:
-			"juno1e79zdt62gppvnfjs2mknh248dn56vckpxpqtys7yftrcge6srx9qumvmkj",
+			"juno1d7xd7erd5jsdm5cleev8vpzc92cwuks6dmejlq0tll80zueg3fws70ld5g",
 		imageUrl:
 			"https://hopegalaxy.mypinata.cloud/ipfs/QmVcSEZKdG9T5XkWLepCKFvW6d36vveZ1rcmg7KNu5dK8C/",
 	},
