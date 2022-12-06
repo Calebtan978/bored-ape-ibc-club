@@ -4,29 +4,34 @@ export const Wrapper = styled.div`
 	position: sticky;
 	left: 0;
 	top: 0;
-	width: calc(100vw - 35px - 57px);
+	width: 100vw;
+	box-sizing: border-box;
 
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 10px;
 
 	padding: 70px 35px 20px 40px;
 	backdrop-filter: blur(10px);
 	z-index: 100;
 
-	/* &:after {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: rgba(255, 255, 255, 0.15);
-	} */
+	@media (max-width: 900px) {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 50px 20px 20px;
+	}
 `;
 
 export const Logo = styled.img`
-	width: 50vw;
+	width: 50%;
+	min-width: 400px;
+	@media (max-width: 768px) {
+		width: 40%;
+	}
 `;
 
 export const WalletStatus = styled.div`
@@ -34,6 +39,9 @@ export const WalletStatus = styled.div`
 	justify-content: flex-end;
 	align-items: center;
 	gap: 20px;
+	@media (max-width: 1024px) {
+		gap: 10px;
+	}
 `;
 
 export const WalletStatusItem = styled.div`
