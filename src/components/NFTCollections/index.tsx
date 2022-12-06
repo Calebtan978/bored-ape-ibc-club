@@ -217,29 +217,33 @@ const NFTCollections: React.FC = () => {
 	const RenderComponents = useMemo(() => {
 		let result: TRenderComponents = {
 			nftImage: {
-				operator: <PlusIcon />,
-				[CollectionIDs.BORED]: <div />,
-				[CollectionIDs.BORED3D]: <div />,
+				operator: <PlusIcon key="nft-image-plus-icon" />,
+				[CollectionIDs.BORED]: <div key="nft-container-blank-div-1" />,
+				[CollectionIDs.BORED3D]: <div key="nft-container-blank-div-2" />,
 			},
 			nftContainer: {
-				operator: <div />,
-				[CollectionIDs.BORED]: <div />,
-				[CollectionIDs.BORED3D]: <div />,
+				operator: <div key="nft-container-blank-div" />,
+				[CollectionIDs.BORED]: <div key="nft-container-blank-div-1" />,
+				[CollectionIDs.BORED3D]: <div key="nft-container-blank-div-2" />,
 			},
 			operator: {
-				operator: <div />,
-				[CollectionIDs.BORED]: <PlusIcon />,
-				[CollectionIDs.BORED3D]: <VerticalEqualIcon />,
+				operator: <div key="operator-blank-div" />,
+				[CollectionIDs.BORED]: <PlusIcon key="operator-plus-icon" />,
+				[CollectionIDs.BORED3D]: (
+					<VerticalEqualIcon key="operator-vertical-equal-icon" />
+				),
 			},
 			nextNftImage: {
-				operator: <HorizontalEqualIcon />,
-				[CollectionIDs.BORED]: <div />,
-				[CollectionIDs.BORED3D]: <div />,
+				operator: (
+					<HorizontalEqualIcon key="next-nft-image-horizontal-equal-icon" />
+				),
+				[CollectionIDs.BORED]: <div key="nft-container-blank-div-1" />,
+				[CollectionIDs.BORED3D]: <div key="nft-container-blank-div-2" />,
 			},
 			nextNftContainer: {
-				operator: <div />,
-				[CollectionIDs.BORED]: <div />,
-				[CollectionIDs.BORED3D]: <div />,
+				operator: <div key="next-nft-container-blank-div" />,
+				[CollectionIDs.BORED]: <div key="nft-container-blank-div-1" />,
+				[CollectionIDs.BORED3D]: <div key="nft-container-blank-div-2" />,
 			},
 		};
 		Collections.forEach((collection: ICollections) => {
@@ -249,7 +253,7 @@ const NFTCollections: React.FC = () => {
 			const crrNextNfts = relatedCollectionId ? nfts[relatedCollectionId] : [];
 
 			result.nftImage[collection.collectionId] = (
-				<NFTImageContainer>
+				<NFTImageContainer key={`nft-image-${collection.collectionId}`}>
 					<img alt="" src={`/images/nft/${collection.collectionId}.png`} />
 					<Button
 						onClick={() =>
@@ -267,7 +271,7 @@ const NFTCollections: React.FC = () => {
 				</NFTImageContainer>
 			);
 			result.nftContainer[collection.collectionId] = (
-				<NftContainer>
+				<NftContainer key={`nft-container-${collection.collectionId}`}>
 					<Text fontSize="25px" bold>
 						My NFTs {renderInfo.collectionName[collection.collectionId]}:{" "}
 						{crrNfts?.length || 0}
@@ -280,7 +284,7 @@ const NFTCollections: React.FC = () => {
 				</NftContainer>
 			);
 			result.nextNftImage[collection.collectionId] = (
-				<NFTImageContainer>
+				<NFTImageContainer key={`next-nft-image-${collection.collectionId}`}>
 					<img
 						alt=""
 						src={`/images/nft/next-${collection.collectionId}.${
@@ -301,7 +305,7 @@ const NFTCollections: React.FC = () => {
 				</NFTImageContainer>
 			);
 			result.nextNftContainer[collection.collectionId] = (
-				<NftContainer>
+				<NftContainer key={`next-nft-container-${collection.collectionId}`}>
 					<Text fontSize="25px" bold>
 						My NFTs {renderInfo.nextCollectionName[collection.collectionId]}:{" "}
 						{crrNextNfts?.length || 0}
@@ -319,37 +323,41 @@ const NFTCollections: React.FC = () => {
 
 	return (
 		<Wrapper>
-			{renderOrder.map((order) => (
-				<>
-					{RenderComponents[order][CollectionIDs.BORED]}
-					{RenderComponents[order]["operator"]}
-					{RenderComponents[order][CollectionIDs.BORED3D]}
-				</>
-			))}
-			{Collections.map((collection) => (
-				<>
-					<ReactTooltip
-						key={`${collection.collectionId}-tooltip`}
-						type="info"
-						effect="solid"
-						id={`${collection.collectionId}-tooltip`}
-					>
-						<TooltipContainer>
-							{renderInfo.tooltip[collection.collectionId]}
-						</TooltipContainer>
-					</ReactTooltip>
-					<ReactTooltip
-						key={`${collection.collectionId}-tooltip-next`}
-						type="info"
-						effect="solid"
-						id={`${collection.collectionId}-tooltip-next`}
-					>
-						<TooltipContainer>
-							{renderInfo["tooltip-next"][collection.collectionId]}
-						</TooltipContainer>
-					</ReactTooltip>
-				</>
-			))}
+			{React.Children.toArray(
+				renderOrder.map((order) => (
+					<>
+						{RenderComponents[order][CollectionIDs.BORED]}
+						{RenderComponents[order]["operator"]}
+						{RenderComponents[order][CollectionIDs.BORED3D]}
+					</>
+				))
+			)}
+			{React.Children.toArray(
+				Collections.map((collection) => {
+					return (
+						<>
+							<ReactTooltip
+								type="info"
+								effect="solid"
+								id={`${collection.collectionId}-tooltip`}
+							>
+								<TooltipContainer>
+									{renderInfo.tooltip[collection.collectionId]}
+								</TooltipContainer>
+							</ReactTooltip>
+							<ReactTooltip
+								type="info"
+								effect="solid"
+								id={`${collection.collectionId}-tooltip-next`}
+							>
+								<TooltipContainer>
+									{renderInfo["tooltip-next"][collection.collectionId]}
+								</TooltipContainer>
+							</ReactTooltip>
+						</>
+					);
+				})
+			)}
 		</Wrapper>
 	);
 };
