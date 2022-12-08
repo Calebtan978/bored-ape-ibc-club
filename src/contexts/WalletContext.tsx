@@ -11,8 +11,8 @@ const WalletProvider = ({ children }: { children: any }) => {
 			walletConnectClientMeta={{
 				name: "BORED APE IBC CLUB",
 				description: "",
-				url: "https://home-5011087114.app-ionos.space/",
-				icons: ["https://home-5011087114.app-ionos.space/logo.png"],
+				url: "https://baic.one/",
+				icons: ["https://baic.one/logo.png"],
 			}}
 		>
 			{children}
