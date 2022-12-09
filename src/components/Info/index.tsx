@@ -26,7 +26,7 @@ const Info: React.FC = () => {
 				<TooltipContainer>
 					<div>A $BANANA a day keeps the doctor away.</div>
 					<div>
-						$BANANA (supply 50,000 Tokens on Juno Chain) <br /> is a Meme Token
+						$BANANA (supply 55,550 Tokens on Juno Chain) <br /> is a Meme Token
 						which will be given some utilities:
 					</div>
 					<ul>
