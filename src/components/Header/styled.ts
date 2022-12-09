@@ -29,7 +29,8 @@ export const Wrapper = styled.div`
 
 export const Logo = styled.img`
 	width: 50%;
-	min-width: 400px;
+	min-width: 300px;
+	max-width: 600px;
 	@media (max-width: 768px) {
 		width: 40%;
 	}
